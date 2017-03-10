@@ -1,0 +1,60 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <context:annotation-config/>
+
+    <!-- controller层, 只扫描controller层，包含authorization包中的controller -->
+    <context:component-scan base-package="com.le.bigdata, com.benjamin.project.controller" use-default-filters="false">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+        <context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.RestController"/>
+        <context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.RequestMapping"/>
+    </context:component-scan>
+
+    <!-- aspectj 配置 -->
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+
+    <mvc:default-servlet-handler/>
+
+    <mvc:interceptors>
+        <!-- 登录验证拦截器 -->
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/authorize"/>
+            <mvc:exclude-mapping path="/api/**"/>
+            <mvc:exclude-mapping path="/api-docs/**"/>
+            <mvc:exclude-mapping path="/*.html"/>
+            <mvc:exclude-mapping path="/js/*"/>
+            <bean class="com.le.bigdata.auth.interceptor.AuthorizationInterceptor">
+                <property name="verifyCode" value="false"></property>
+            </bean>
+        </mvc:interceptor>
+        <!-- 权限验证拦截器 -->
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean class="com.le.bigdata.auth.interceptor.PrivilegeInterceptor">
+            </bean>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+    <bean id="stringConverter" class="org.springframework.http.converter.StringHttpMessageConverter">
+        <constructor-arg index="0" value="UTF-8"/>
+    </bean>
+
+    <!-- 启动注解驱动的Spring MVC功能，注册请求url和注解POJO类方法的映射 -->
+    <!-- 注意该配置必须位于RequestMappingHandlerAdapter之后，否则设置的字符集无效 -->
+    <mvc:annotation-driven>
+        <mvc:message-converters>
+            <ref bean="stringConverter"/>
+            <!--<ref bean="jsonConverter"/>-->
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
+</beans>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <bean class="com.le.bigdata.core.util.SpringContextUtils"/>
+
+    <context:annotation-config/>
+
+    <!-- 需要将自己的包名加到这里边 例如 com.benjamin.project-->
+    <context:component-scan base-package="
+    com.le.bigdata, com.benjamin.project" use-default-filters="true">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+        <context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.RestController"/>
+        <context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.RequestMapping"/>
+    </context:component-scan>
+    <!-- 启动AspectJ支持 -->
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+
+    <!--mysql数据源 hive导出的库 bd_dmp-->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"   destroy-method="close">
+        <property name="driverClassName" value="${jdbc.mysql.driver.class}"/>
+        <property name="url" value="${jdbc.mysql.url}"/>
+        <property name="username" value="${jdbc.mysql.user}"/>
+        <property name="password" value="${jdbc.mysql.password}"/>
+
+        <property name="maxActive" value="30" />
+        <property name="initialSize" value="5" />
+        <property name="maxWait" value="60000" />
+        <property name="minIdle" value="5" />
+
+        <property name="validationQuery" value="SELECT 'x' FROM DUAL" />
+        <property name="testWhileIdle" value="true" />
+        <property name="testOnBorrow" value="false" />
+        <property name="testOnReturn" value="false" />
+        <!-- mysql 不支持 poolPreparedStatements-->
+        <!--<property name="poolPreparedStatements" value="true" />-->
+        <!--<property name="maxPoolPreparedStatementPerConnectionSize" value="20" />-->
+
+        <!-- 开启Druid的监控统计功能 -->
+    </bean>
+
+
+    <!-- 配置事务 -->
+    <bean id="txManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+    <!-- 配置基于注解的事物aop -->
+    <tx:annotation-driven transaction-manager="txManager" proxy-target-class="true"/>
+
+    <!--mybatis-->
+    <!-- config.xml配置方式或者spring 属性配置方式 -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="typeHandlersPackage" value="com.le.bigdata.common.dao.typehandler"/>
+        <property name="mapperLocations">
+            <array>
+                <value>classpath:mapper/*.xml</value>
+            </array>
+        </property>
+
+        <!-- rowbounds 默认配置: offset为page limit 为pageNumber -->
+        <property name="plugins">
+            <array>
+                <bean class="com.github.pagehelper.PageHelper">
+                    <property name="properties">
+                        <value>
+                            dialect=mysql
+                        </value>
+                    </property>
+                </bean>
+            </array>
+        </property>
+        <!--<property name="configLocation" value="classpath:/mybatis.xml" />-->
+    </bean>
+
+    <!-- 调用方法异常:java.lang.ClassCastException: sun.reflect.generics.reflectiveObjects.TypeVariableImpl cannot be cast to java.lang.Class-->
+    <!-- 解决方法：将BaseMapper放在basePackage之外 -->
+    <bean class="tk.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.le.bigdata.common.dao.mapper, com.benjamin.project.dao"/>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+        <property name="properties">
+            <value>
+                <!-- 自定义的Mapper请在这里配置 -->
+                mappers=com.le.bigdata.common.dao.BaseMapper
+            </value>
+        </property>
+    </bean>
+
+
+    <context:property-placeholder ignore-unresolvable="true" order="1" location="classpath:auth.properties"/>
+
+    <!-- profiles 配置 -->
+    <!-- 定义测试环境配置文件 -->
+    <beans profile="dev">
+        <context:property-placeholder ignore-unresolvable="true" order="3" location="classpath:jdbc.dev.properties"/>
+    </beans>
+</beans>
