@@ -57,4 +57,7 @@
         </mvc:message-converters>
     </mvc:annotation-driven>
 
+    <!-- swagger 配置-->
+    <bean class="com.benjamin.project.swagger.MySwaggerConfig"/>
+
 </beans>

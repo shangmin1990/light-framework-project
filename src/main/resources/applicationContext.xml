@@ -11,6 +11,18 @@
 
     <bean class="com.le.bigdata.core.util.SpringContextUtils"/>
 
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+
+    <bean class="com.le.bigdata.core.util.JedisPoolUtil">
+        <property name="host" value="${host}"></property>
+        <property name="port" value="${port}"></property>
+        <property name="password" value="${password}"></property>
+        <property name="maxWaitMillis" value="${maxWait}"></property>
+        <property name="maxTotal" value="${maxTotal}"></property>
+        <property name="maxIdle" value="${maxIdle}"></property>
+        <property name="timeout" value="${timeout}"></property>
+    </bean>
+
     <context:annotation-config/>
 
     <!-- 需要将自己的包名加到这里边 例如 com.benjamin.project-->
@@ -21,14 +33,14 @@
         <context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.RequestMapping"/>
     </context:component-scan>
     <!-- 启动AspectJ支持 -->
-    <aop:aspectj-autoproxy proxy-target-class="true"/>
+
 
     <!--mysql数据源 hive导出的库 bd_dmp-->
-    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"   destroy-method="close">
-        <property name="driverClassName" value="${jdbc.mysql.driver.class}"/>
-        <property name="url" value="${jdbc.mysql.url}"/>
-        <property name="username" value="${jdbc.mysql.user}"/>
-        <property name="password" value="${jdbc.mysql.password}"/>
+    <bean id="dataSource1" class="com.alibaba.druid.pool.DruidDataSource"   destroy-method="close">
+        <property name="driverClassName" value="${db1.jdbc.mysql.driver.class}"/>
+        <property name="url" value="${db1.jdbc.mysql.url}"/>
+        <property name="username" value="${db1.jdbc.mysql.user}"/>
+        <property name="password" value="${db1.jdbc.mysql.password}"/>
 
         <property name="maxActive" value="30" />
         <property name="initialSize" value="5" />
@@ -44,6 +56,38 @@
         <!--<property name="maxPoolPreparedStatementPerConnectionSize" value="20" />-->
 
         <!-- 开启Druid的监控统计功能 -->
+    </bean>
+
+    <!--mysql数据源 hive导出的库 bd_dmp-->
+    <bean id="dataSource2" class="com.alibaba.druid.pool.DruidDataSource"   destroy-method="close">
+        <property name="driverClassName" value="${db2.jdbc.mysql.driver.class}"/>
+        <property name="url" value="${db2.jdbc.mysql.url}"/>
+        <property name="username" value="${db2.jdbc.mysql.user}"/>
+        <property name="password" value="${db2.jdbc.mysql.password}"/>
+
+        <property name="maxActive" value="30" />
+        <property name="initialSize" value="5" />
+        <property name="maxWait" value="60000" />
+        <property name="minIdle" value="5" />
+
+        <property name="validationQuery" value="SELECT 'x' FROM DUAL" />
+        <property name="testWhileIdle" value="true" />
+        <property name="testOnBorrow" value="false" />
+        <property name="testOnReturn" value="false" />
+        <!-- mysql 不支持 poolPreparedStatements-->
+        <!--<property name="poolPreparedStatements" value="true" />-->
+        <!--<property name="maxPoolPreparedStatementPerConnectionSize" value="20" />-->
+
+        <!-- 开启Druid的监控统计功能 -->
+    </bean>
+
+    <bean id="dataSource" class="com.le.bigdata.core.datasource.MultiDataSource">
+        <property name="targetDataSources">
+            <map key-type="com.le.bigdata.core.datasource.DataSources">
+                <entry key="SLOT0" value-ref="dataSource1"/>
+                <entry key="SLOT1" value-ref="dataSource2"/>
+            </map>
+        </property>
     </bean>
 
 
@@ -95,12 +139,12 @@
         </property>
     </bean>
 
-
     <context:property-placeholder ignore-unresolvable="true" order="1" location="classpath:auth.properties"/>
 
     <!-- profiles 配置 -->
     <!-- 定义测试环境配置文件 -->
     <beans profile="dev">
         <context:property-placeholder ignore-unresolvable="true" order="3" location="classpath:jdbc.dev.properties"/>
+        <context:property-placeholder ignore-unresolvable="true" location="classpath:redis.dev.properties"/>
     </beans>
 </beans>

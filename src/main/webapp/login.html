@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form>
+    <label>username</label>
+    <input type="text" name="username"/>
+    <label>password</label>
+    <input type="password" name="password"/>
+    <input type="hidden" name="grant_type" value="password"/>
+    <input type="button" value="提交"/>
+</form>
+<script type="text/javascript" src="js/jquery.js"></script>
+<!--<script type="text/javascript" src="js/md5.js"></script>-->
+<script type="text/javascript">
+    $(function(){
+        $('input[type="button"]').on('click', function(){
+            var name = $('input[name="username"]').val();
+            var password = $('input[name="password"]').val();
+            $.post("/authorize", {
+                username: encodeURIComponent(name),
+                pwd: encodeURIComponent(password),
+                grant_type: 'password'
+            }, function(result, status){
+                window.location.href = '/test/ad?page=1&size=10';
+            })
+        });
+
+    })
+</script>
+</body>
+</html>
