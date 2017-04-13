@@ -9,11 +9,11 @@
      http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
      http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
-    <bean class="com.le.bigdata.core.util.SpringContextUtils"/>
+    <bean class="net.shmin.core.util.SpringContextUtils"/>
 
     <aop:aspectj-autoproxy proxy-target-class="true"/>
 
-    <bean class="com.le.bigdata.core.util.JedisPoolUtil">
+    <bean class="net.shmin.core.util.JedisPoolUtil">
         <property name="host" value="${host}"></property>
         <property name="port" value="${port}"></property>
         <property name="password" value="${password}"></property>
@@ -27,7 +27,7 @@
 
     <!-- 需要将自己的包名加到这里边 例如 com.benjamin.project-->
     <context:component-scan base-package="
-    com.le.bigdata, com.benjamin.project" use-default-filters="true">
+    net.shmin, com.benjamin.project" use-default-filters="true">
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
         <context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.RestController"/>
         <context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.RequestMapping"/>
@@ -81,9 +81,9 @@
         <!-- 开启Druid的监控统计功能 -->
     </bean>
 
-    <bean id="dataSource" class="com.le.bigdata.core.datasource.MultiDataSource">
+    <bean id="dataSource" class="net.shmin.core.datasource.MultiDataSource">
         <property name="targetDataSources">
-            <map key-type="com.le.bigdata.core.datasource.DataSources">
+            <map key-type="net.shmin.core.datasource.DataSources">
                 <entry key="SLOT0" value-ref="dataSource1"/>
                 <entry key="SLOT1" value-ref="dataSource2"/>
             </map>

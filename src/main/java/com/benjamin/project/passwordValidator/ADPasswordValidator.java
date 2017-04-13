@@ -1,8 +1,7 @@
 package com.benjamin.project.passwordValidator;
 
-import com.le.bigdata.auth.authentication.PasswordValidator;
-import com.le.bigdata.core.dto.CommonResponseDTO;
-import com.le.bigdata.core.exception.BusinessServiceException;
+import net.shmin.auth.authentication.PasswordValidator;
+import net.shmin.core.dto.CommonResponseDTO;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;

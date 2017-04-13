@@ -1,7 +1,7 @@
 package com.benjamin.project.service;
 
 import com.benjamin.project.model.Ad;
-import com.le.bigdata.common.service.IBaseService;
+import net.shmin.common.service.IBaseService;
 
 import java.util.List;
 

@@ -2,7 +2,7 @@ package com.benjamin.project.service.impl;
 
 import com.benjamin.project.model.Ad;
 import com.benjamin.project.service.IADService;
-import com.le.bigdata.common.service.BaseService;
+import net.shmin.common.service.BaseService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

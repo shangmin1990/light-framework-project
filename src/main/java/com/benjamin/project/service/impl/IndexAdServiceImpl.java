@@ -2,9 +2,10 @@ package com.benjamin.project.service.impl;
 
 import com.benjamin.project.model.IndexAd;
 import com.benjamin.project.service.IIndexAdService;
-import com.le.bigdata.common.service.BaseService;
-import com.le.bigdata.core.datasource.DataSources;
-import com.le.bigdata.core.datasource.annotation.DataSource;
+
+import net.shmin.common.service.BaseService;
+import net.shmin.core.datasource.DataSources;
+import net.shmin.core.datasource.annotation.DataSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
