@@ -12,7 +12,7 @@
     <context:annotation-config/>
 
     <!-- controller层, 只扫描controller层，包含authorization包中的controller -->
-    <context:component-scan base-package="com.le.bigdata, com.benjamin.project.controller" use-default-filters="false">
+    <context:component-scan base-package="net.shmin, com.benjamin.project.controller" use-default-filters="false">
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
         <context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.RestController"/>
         <context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.RequestMapping"/>
@@ -32,14 +32,14 @@
             <mvc:exclude-mapping path="/api-docs/**"/>
             <mvc:exclude-mapping path="/*.html"/>
             <mvc:exclude-mapping path="/js/*"/>
-            <bean class="com.le.bigdata.auth.interceptor.AuthorizationInterceptor">
+            <bean class="net.shmin.auth.interceptor.AuthorizationInterceptor">
                 <property name="verifyCode" value="false"></property>
             </bean>
         </mvc:interceptor>
         <!-- 权限验证拦截器 -->
         <mvc:interceptor>
             <mvc:mapping path="/**"/>
-            <bean class="com.le.bigdata.auth.interceptor.PrivilegeInterceptor">
+            <bean class="net.shmin.auth.interceptor.PrivilegeInterceptor">
             </bean>
         </mvc:interceptor>
     </mvc:interceptors>
