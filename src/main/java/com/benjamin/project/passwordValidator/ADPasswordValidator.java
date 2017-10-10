@@ -1,7 +1,9 @@
 package com.benjamin.project.passwordValidator;
 
+import net.shmin.auth.AuthContext;
 import net.shmin.auth.authentication.PasswordValidator;
 import net.shmin.core.dto.CommonResponseDTO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Component("dream_business_ad_password_validator")
 public class ADPasswordValidator implements PasswordValidator {
+
     @Override
     public CommonResponseDTO login(HttpServletRequest httpServletRequest) throws Exception {
         //TODO 登录逻辑实现

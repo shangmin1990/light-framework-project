@@ -104,7 +104,8 @@
     <!-- config.xml配置方式或者spring 属性配置方式 -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource" />
-        <property name="typeHandlersPackage" value="com.le.bigdata.common.dao.typehandler"/>
+        <property name="typeHandlersPackage" value="com.le.bigdata.common.dao.typehandler,
+        com.benjamin.project.dao.typehandler"/>
         <property name="mapperLocations">
             <array>
                 <value>classpath:mapper/*.xml</value>
@@ -134,7 +135,7 @@
         <property name="properties">
             <value>
                 <!-- 自定义的Mapper请在这里配置 -->
-                mappers=com.le.bigdata.common.dao.BaseMapper
+                mappers=net.shmin.common.dao.BaseMapper
             </value>
         </property>
     </bean>

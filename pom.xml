@@ -8,19 +8,22 @@
     <artifactId>light-framework-project</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 
+    <properties>
+        <lightframework.version>2.2.1-RELEASE</lightframework.version>
+    </properties>
     <packaging>war</packaging>
 
     <dependencies>
         <dependency>
             <groupId>net.shmin</groupId>
             <artifactId>common</artifactId>
-            <version>2.0.0</version>
+            <version>${lightframework.version}</version>
         </dependency>
 
         <dependency>
             <groupId>net.shmin</groupId>
             <artifactId>authorization</artifactId>
-            <version>2.0.0</version>
+            <version>${lightframework.version}</version>
         </dependency>
 
         <dependency>
@@ -36,6 +39,21 @@
             <artifactId>springfox-swagger2</artifactId>
             <version>2.2.2</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-core -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>4.0.0.RELEASE</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>4.0.0.RELEASE</version>
+        </dependency>
+
 
     </dependencies>
 

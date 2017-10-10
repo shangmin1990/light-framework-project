@@ -1,5 +1,7 @@
 package com.benjamin.project.model;
 
+import com.benjamin.project.model.enums.ImageType;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -16,6 +18,8 @@ public class IndexAd {
     private Integer id;
     private String image_path;
     private String url;
+
+    private ImageType imageType;
 
     public Integer getId() {
         return id;
@@ -39,5 +43,13 @@ public class IndexAd {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public ImageType getImageType() {
+        return imageType;
+    }
+
+    public void setImageType(ImageType imageType) {
+        this.imageType = imageType;
     }
 }

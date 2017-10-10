@@ -35,8 +35,8 @@ public class TestController {
     @RequestMapping(value = "/ad", method = RequestMethod.GET)
     public CommonResponseDTO getAllByPage(@RequestParam int page,
                                           @RequestParam int size){
-        RowBounds rowBounds = new RowBounds(page, size);
-        List<Ad> list = adService.selectAllPage(rowBounds);
+//        RowBounds rowBounds = new RowBounds(page, size);
+        List<Ad> list = adService.selectAllPage(page, size);
         CommonPageDTO commonPageDTO = PageUtil.convertList2Page(list, page, size);
         return CommonResponseDTO.success(commonPageDTO);
     }
@@ -48,7 +48,7 @@ public class TestController {
      */
     @RequestMapping(value = "ad/{id}", method = RequestMethod.GET)
     public CommonResponseDTO getAllByPage(@PathVariable Integer id){
-        Ad ad = adService.findById(id);
+        Ad ad = adService.selectById(id);
         return CommonResponseDTO.success(ad);
     }
 

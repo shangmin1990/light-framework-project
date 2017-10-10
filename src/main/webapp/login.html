@@ -20,7 +20,7 @@
         $('input[type="button"]').on('click', function(){
             var name = $('input[name="username"]').val();
             var password = $('input[name="password"]').val();
-            $.post("/authorize", {
+            $.post("/authorize1", {
                 username: encodeURIComponent(name),
                 pwd: encodeURIComponent(password),
                 grant_type: 'password'

@@ -9,6 +9,8 @@
         http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
         http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
+    <context:property-placeholder ignore-unresolvable="true" order="1" location="classpath:auth.properties"/>
+
     <context:annotation-config/>
 
     <!-- controller层, 只扫描controller层，包含authorization包中的controller -->
@@ -27,7 +29,9 @@
         <!-- 登录验证拦截器 -->
         <mvc:interceptor>
             <mvc:mapping path="/**"/>
-            <mvc:exclude-mapping path="/authorize"/>
+            <mvc:exclude-mapping path="${request.authorize.path}"/>
+            <mvc:exclude-mapping path="${request.logout.path}"/>
+            <mvc:exclude-mapping path="${request.refresh.token.path}"/>
             <mvc:exclude-mapping path="/api/**"/>
             <mvc:exclude-mapping path="/api-docs/**"/>
             <mvc:exclude-mapping path="/*.html"/>
@@ -59,5 +63,4 @@
 
     <!-- swagger 配置-->
     <bean class="com.benjamin.project.swagger.MySwaggerConfig"/>
-
 </beans>
