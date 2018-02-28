@@ -9,6 +9,8 @@
      http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
      http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
+    <import resource="classpath:spring/spring-dubbo.xml"/>
+
     <bean class="net.shmin.core.util.SpringContextUtils"/>
 
     <aop:aspectj-autoproxy proxy-target-class="true"/>
@@ -104,7 +106,7 @@
     <!-- config.xml配置方式或者spring 属性配置方式 -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource" />
-        <property name="typeHandlersPackage" value="com.le.bigdata.common.dao.typehandler,
+        <property name="typeHandlersPackage" value="net.shmin.common.dao.typehandler,
         com.benjamin.project.dao.typehandler"/>
         <property name="mapperLocations">
             <array>

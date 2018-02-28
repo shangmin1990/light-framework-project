@@ -9,8 +9,9 @@
     <version>1.0.0-SNAPSHOT</version>
 
     <properties>
-        <lightframework.version>2.2.2-RELEASE</lightframework.version>
+        <lightframework.version>2.2.3-RELEASE</lightframework.version>
     </properties>
+
     <packaging>war</packaging>
 
     <dependencies>
@@ -54,6 +55,55 @@
             <version>4.0.0.RELEASE</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>dubbo</artifactId>
+            <version>2.5.3</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.javassist</groupId>
+                    <artifactId>javassist</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+
+        <!-- zk 注册中心 -->
+        <!-- https://mvnrepository.com/artifact/com.101tec/zkclient -->
+        <dependency>
+            <groupId>com.101tec</groupId>
+            <artifactId>zkclient</artifactId>
+            <version>0.10</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-log4j12</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>net.shmin.dubbotest</groupId>
+            <artifactId>api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fengjr.sauron</groupId>
+            <artifactId>sauron-agent</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
 
     </dependencies>
 
@@ -95,12 +145,13 @@
 
     <!-- 定义两个profile 正式环境与测试环境 默认是测试环境 -->
     <profiles>
-        <!--<profile>-->
-            <!--<id>release</id>-->
-            <!--<properties>-->
-                <!--<profiles.activation>release</profiles.activation>-->
-            <!--</properties>-->
-        <!--</profile>-->
+
+        <profile>
+            <id>release</id>
+            <properties>
+                <profiles.activation>release</profiles.activation>
+            </properties>
+        </profile>
 
         <profile>
             <id>dev</id>
