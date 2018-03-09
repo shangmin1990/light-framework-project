@@ -11,6 +11,8 @@
 
     <bean class="net.shmin.core.util.SpringContextUtils"/>
 
+    <import resource="upm.xml"/>
+
     <aop:aspectj-autoproxy proxy-target-class="true"/>
 
     <bean class="net.shmin.core.util.JedisPoolUtil">

@@ -54,6 +54,12 @@
             <version>4.0.0.RELEASE</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.fengjr.upm</groupId>
+            <artifactId>fengjr-upm-auth</artifactId>
+            <version>1.0.8-SNAPSHOT</version>
+        </dependency>
+
 
     </dependencies>
 
