@@ -15,8 +15,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.async.WebAsyncTask;
 
+import javax.servlet.annotation.WebFilter;
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -146,6 +149,29 @@ public class TestController {
     public CommonResponseDTO getAll(){
         List<IndexAd> list = indexAdService.selectAll();
         return CommonResponseDTO.success(list);
+    }
+
+    @RequestMapping(value = "noAuth/async", method = RequestMethod.GET)
+    public WebAsyncTask<String> asyncTest(){
+        WebAsyncTask webAsyncTask = new WebAsyncTask(1000, new Callable<String>() {
+            @Override
+            public String call() throws Exception {
+                return "async-test";
+            }
+        });
+        webAsyncTask.onCompletion(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("async success");
+            }
+        });
+        webAsyncTask.onTimeout(new Callable<String>() {
+            @Override
+            public String call() throws Exception {
+                return "timeOut";
+            }
+        });
+        return webAsyncTask;
     }
 
     @RequestMapping(value = "noAuth/test", method = RequestMethod.GET)
